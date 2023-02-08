@@ -87,7 +87,7 @@ func SetPaymentDetails(paymentID string, paymentDetails *models.PaymentResponse)
 		Ctx:   context.TODO(),
 		Key:   getPaymentCacheKey(paymentID),
 		Value: paymentDetails,
-		TTL:   time.Minute,
+		TTL:   time.Hour,
 	})
 }
 

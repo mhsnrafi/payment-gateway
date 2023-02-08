@@ -12,13 +12,8 @@ import (
 	"go.uber.org/zap"
 )
 
-type ProcessPaymentResponse struct {
-	PaymentIdentifier string
-	Status            string
-}
-
 // ProcessPayment processes a payment and returns a response
-func ProcessPayment(payment models.PaymentRequest) (ProcessPaymentResponse, error) {
+func ProcessPayment(payment models.PaymentRequest) (models.ProcessPaymentResponse, error) {
 	// Store payment details in database
 	paymentInfo := db.Payment{
 		PaymentID:  uuid.New().String(),
@@ -32,7 +27,7 @@ func ProcessPayment(payment models.PaymentRequest) (ProcessPaymentResponse, erro
 	}
 	if err := DbConnection.Create(&paymentInfo).Error; err != nil {
 		logger.Error("failed to store payment details", zap.Error(err))
-		return ProcessPaymentResponse{}, fmt.Errorf("failed to store payment details")
+		return models.ProcessPaymentResponse{}, fmt.Errorf("failed to store payment details")
 	}
 
 	// Simulate acquiring bank
@@ -41,13 +36,13 @@ func ProcessPayment(payment models.PaymentRequest) (ProcessPaymentResponse, erro
 	if status == constants.SUCCESS {
 		if err := DbConnection.Model(&db.Payment{}).Where("id = ?", paymentInfo.ID).Update(db.Payment{Status: constants.SUCCESS}).Error; err != nil {
 			logger.Error("failed to store payment details", zap.Error(err))
-			return ProcessPaymentResponse{}, fmt.Errorf("failed to store payment details")
+			return models.ProcessPaymentResponse{}, fmt.Errorf("failed to store payment details")
 		}
 	}
 
 	logger.Info("Payment processed", zap.String("status", status))
 	//  Return success or failure response
-	return ProcessPaymentResponse{
+	return models.ProcessPaymentResponse{
 		Status:            status,
 		PaymentIdentifier: paymentInfo.PaymentID,
 	}, nil

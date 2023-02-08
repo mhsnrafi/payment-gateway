@@ -53,6 +53,11 @@ type PaymentRequest struct {
 	CVV        int     `json:"cvv"`
 }
 
+type ProcessPaymentResponse struct {
+	PaymentIdentifier string
+	Status            string
+}
+
 func ValidatePaymentRequest(request PaymentRequest) error {
 	// Validate card number format
 	if len(strings.ReplaceAll(request.CardNumber, " ", "")) != 16 {

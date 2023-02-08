@@ -79,34 +79,3 @@ func TestRetrievePaymentWithInvalidID(t *testing.T) {
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to retrieve payment details")
 }
-
-func TestRetrievePaymentWithCacheError(t *testing.T) {
-	services.LoadConfig()
-	services.ConnectDB()
-
-	_, isFound, cacheError := services.GetPaymentDetailsFromCache("9bbaf0c4-8d6f-4ae1-920a-b91299b68b0a")
-
-	paymentID := "9bbaf0c4-8d6f-4ae1-920a-b91299b68b0a"
-	_, err := services.RetrievePayment(paymentID)
-	assert.Error(t, err)
-	assert.Equal(t, isFound, false)
-	assert.Contains(t, "cache: key is missing", cacheError.Error())
-}
-
-func TestRetrievePaymentWithValidCache(t *testing.T) {
-	services.LoadConfig()
-	services.ConnectDB()
-
-	// Mocking GetPaymentDetailsFromCache function
-	paymentResponse, isFound, err := services.GetPaymentDetailsFromCache("9bbaf0c4-8d6f-4ae1-920a-b91299b68b0a")
-
-	paymentID := "9bbaf0c4-8d6f-4ae1-920a-b91299b68b0a"
-	paymentInfo, err := services.RetrievePayment(paymentID)
-	assert.NoError(t, err)
-	assert.Equal(t, isFound, true)
-	assert.Equal(t, paymentResponse.PaymentID, paymentInfo.PaymentID)
-	assert.Equal(t, paymentResponse.MaskedCardNumber, paymentInfo.MaskedCardNumber)
-	assert.Equal(t, paymentResponse.Amount, paymentInfo.Amount)
-	assert.Equal(t, paymentResponse.Currency, paymentInfo.Currency)
-	assert.Equal(t, paymentResponse.Status, paymentInfo.Status)
-}

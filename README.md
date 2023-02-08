@@ -11,6 +11,7 @@
 4. Postgres DB
 5. Docker
 
+These technologies were chosen to provide a scalable, performant, and maintainable solution for building a payment gateway API and bank simulator
 
 ## Problem Statement and Solution
 The objective of this challenge is to create a payment gateway API that
@@ -20,7 +21,7 @@ which includes capturing information such as the card number,
 expiry date, amount, currency, and CVV. Additionally, merchants 
 should be able to retrieve information on previously processed payments. The payment gateway will handle validating requests, storing card information, and forwarding payment requests to the acquiring bank, which will be simulated using the CKO bank simulator for testing purposes. The response from the payment gateway will include a masked card number, card details, and a status code indicating the success or failure of the payment
 
-### Methods Explanation how the function works
+### Assumtions and Explanation how the function works
 There are couple of API's Designed to solve this challenge and to secure the solution
 1. Process Payment:
    1. The function "ProcessPayment" is used to process the payment from the customer. It takes in a struct called "PaymentRequest" as input and returns two outputs, "ProcessPaymentResponse" and an error. 
@@ -47,10 +48,12 @@ There are couple of API's Designed to solve this challenge and to secure the sol
 
 4. API Collection Json already included in the project
 
+5. To make system resiliat, using the retries mechanism circuit breaker aprroach
+6. Proper logging is added used zap logger
+7. To secure api, used JWT authentication mechanism
 
 
-
-## To use the Payment Gateway API, follow these steps:
+## How to run the solution, follow these steps:
 
 Clone the repository: Run the following command to clone the repository to your local machine: 
 ```bash
@@ -206,7 +209,7 @@ This endpoint retrieve the previously made payments with masked card number
 ## Tests
 The API includes a set of unit tests to ensure proper functionality. To run the tests, use the following command.
 ```bash
-go test ./...
+go test -v ./...
 ```
 
 ## API Documentation
@@ -217,10 +220,14 @@ http://localhost:8080/swagger/index.html#/
 
 
 
+Login into grafana using the creds mentioned in the `.env.local` file and import the dashboards using `dashbords/*.json`
 
 
-
-Login into grafana using the creds mentioned in the `.env` file and import the dashboards using `dashbords/*.json`
+## why cloud technologies you’d use and why.
+1. To run the solution in a cloud environment, one can use a cloud-based PostgreSQL database such as Amazon RDS
+2. The Docker image can be deployed on a cloud-based container orchestration platform such as Amazon ECS
+3. To scale the solution, one can use a load balancer such as Amazon ELB
+4. To monitor the solution, one can use a cloud-based monitoring solution such as Amazon CloudWatch
 
 ###### Screenshots of the projects
 ![](https://i.postimg.cc/R3jDvFVH/Screenshot-2023-02-07-at-3-42-45-PM.png)

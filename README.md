@@ -50,25 +50,31 @@ There are couple of API's Designed to solve this challenge and to secure the sol
 
 
 
-### To use the Payment Gateway API, follow these steps:
+## To use the Payment Gateway API, follow these steps:
 
 Clone the repository: Run the following command to clone the repository to your local machine: 
 ```bash
-git clone https://github.com/[user-name]/payment-api.git
+git clone https://github.com/mhsnrafi/checkout.git
 
 ```
 
-Install dependencies: Change into the project directory and run go mod download to install the required dependencies.
+### Install dependencies: 
+Change into the project directory and run go mod download to install the required dependencies.
 
-Start the API: Use the command docker-compose up to start the API.
+### Start the API: 
+Use the command docker-compose up to start the API.
 
-Configure credentials: The credentials required to connect to the database and run the API are described in the .env.local file.
+### Configure credentials: 
+The credentials required to connect to the database and run the API are described in the .env.local file.
 
-Run migrations: Connect to the database using the credentials from the .env.local file and run the migrations located in the Migrations/payments.sql file. This will create the required tables for the card balance and fraud.
+### Run migrations: 
+Connect to the database using the credentials from the .env.local file and run the migrations located in the Migrations/payments.sql file. This will create the required tables for the card balance and fraud.
 
-Generate access token: Call the "Generate access token" endpoint to obtain an access token, which is required to authorize the API calls. Add the header "Bearer-Token" to each API request, using the access token obtained in this step.
+###  Generate access token: 
+Call the "Generate access token" endpoint to obtain an access token, which is required to authorize the API calls. Add the header "Bearer-Token" to each API request, using the access token obtained in this step.
 
-Use the API: The Postman collection is attached for easy use of the API.
+### Use the API: 
+The Postman collection is attached for easy use of the API.
 
 
 ### Endpoints

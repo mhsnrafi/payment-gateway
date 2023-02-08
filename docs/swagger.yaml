@@ -1,0 +1,147 @@
+definitions:
+  models.AuthRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  models.PaymentRequest:
+    properties:
+      amount:
+        type: number
+      card_number:
+        type: string
+      currency:
+        type: string
+      cvv:
+        type: integer
+      expiry_month:
+        type: integer
+      expiry_year:
+        type: integer
+    type: object
+  models.RefreshRequest:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+    type: object
+  models.Response:
+    properties:
+      data:
+        additionalProperties: {}
+        type: object
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /access:
+    post:
+      consumes:
+      - application/json
+      description: Generate new access tokens for the provided email.
+      parameters:
+      - description: Auth Request
+        in: body
+        name: authReq
+        required: true
+        schema:
+          $ref: '#/definitions/models.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Generate new access tokens.
+      tags:
+      - Tokens
+  /payment:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve payment details for a specified payment using the payment
+        ID provided in the request URL query parameters.
+      parameters:
+      - description: Payment ID
+        in: query
+        name: payment_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Retrieve payment details for a specified payment.
+      tags:
+      - Payments
+    post:
+      consumes:
+      - application/json
+      description: Handle the processing of a payment request by validating the payment
+        details, processing the payment and returning the response.
+      parameters:
+      - description: Payment Request
+        in: body
+        name: paymentReq
+        required: true
+        schema:
+          $ref: '#/definitions/models.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Handle the processing of a payment request.
+      tags:
+      - Payments
+  /refresh:
+    post:
+      consumes:
+      - application/json
+      description: Handle the request for token refresh by validating the refresh
+        token, generating new access and refresh tokens and returning the response.
+      parameters:
+      - description: Refresh Request
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/models.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Response'
+      summary: Handle the request for token refresh.
+      tags:
+      - Tokens
+swagger: "2.0"

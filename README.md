@@ -1,4 +1,4 @@
-## Checkout Challenge
+## Payment Gateway
 1. Build an API that allows a merchant:
    a. To process a payment through your payment gateway.
    b. To retrieve details of a previously made payment.
